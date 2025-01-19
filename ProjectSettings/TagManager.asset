@@ -8,7 +8,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Post Processing
   - Water
   - UI
   - 
@@ -46,6 +46,9 @@ TagManager:
     locked: 0
   - name: Walls
     uniqueID: 2040979321
+    locked: 0
+  - name: Guard
+    uniqueID: 2749964121
     locked: 0
   - name: Player
     uniqueID: 2412568909
