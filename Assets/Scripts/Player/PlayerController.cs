@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
     public CurrentState currentState;
     private float lastX = 0f;
     private float lastY = -1f;
-    private bool canMove = true;
 
     private PlayerInput playerInput;
     private FrameInput frameInput;
@@ -25,8 +24,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update() {
         GatherInput();
-        HandleHacking();
-        HandleMovement();
+        if (currentState != CurrentState.Caught) {
+            HandleHacking();
+        }
+        if (currentState != CurrentState.Hacking &&
+            currentState != CurrentState.Caught) {
+            HandleMovement();
+        }
     }
 
     private void GatherInput() {
@@ -34,7 +38,6 @@ public class PlayerController : MonoBehaviour
     }
 
     private void HandleMovement() {
-        if (!canMove) return;
         // Move the player
         playerMovement.SetCurrentDirection(frameInput.Move);
 
@@ -54,16 +57,20 @@ public class PlayerController : MonoBehaviour
     }
 
     private void HandleHacking() {
-        if (frameInput.Hack) {
+        if (frameInput.Hack && currentState != CurrentState.Caught) {
             currentState = CurrentState.Hacking;
             playerMovement.SetCurrentDirection(Vector2.zero);
-            canMove = false;
             hackingTool.SetActive(true);
         } else {
             currentState = CurrentState.Idle;
-            canMove = true;
             hackingTool.SetActive(false);
         }
+    }
+
+    public void WasCaught() {
+        currentState = CurrentState.Caught;
+        playerMovement.SetCurrentDirection(Vector2.zero);
+        hackingTool.SetActive(false);
     }
 }
 public enum CurrentState { Idle, Walking, Hacking, Caught }
