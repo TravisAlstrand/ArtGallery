@@ -144,13 +144,8 @@ public class Guard : MonoBehaviour
             rigidBody.linearVelocity = Vector2.zero;
             currentGuardState = CurrentGuardState.idle;
             bustedText.SetActive(true);
-            StartCoroutine(WaitToReloadScene());
+            sceneController.ReloadScene();
         }
-    }
-
-    private IEnumerator WaitToReloadScene() {
-        yield return new WaitForSeconds(2f);
-        sceneController.ReloadScene();
     }
 }
 

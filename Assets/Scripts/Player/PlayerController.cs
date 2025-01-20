@@ -3,19 +3,24 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private GameObject hackingTool;
+    [SerializeField] private GameObject artPiece;
+    [SerializeField] private GameObject bustedText;
     public CurrentState currentState;
     private float lastX = 0f;
     private float lastY = -1f;
+    private bool canTakeItem, canHack;
 
     private PlayerInput playerInput;
     private FrameInput frameInput;
     private PlayerMovement playerMovement;
     private Animator animator;
+    private SceneController sceneController;
 
     private void Awake() {
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
+        sceneController = FindFirstObjectByType<SceneController>();
     }
 
     private void Start() {
@@ -30,6 +35,11 @@ public class PlayerController : MonoBehaviour
         if (currentState != CurrentState.Hacking &&
             currentState != CurrentState.Caught) {
             HandleMovement();
+        }
+        if (canTakeItem && frameInput.Interact &&
+            currentState != CurrentState.Hacking &&
+            currentState != CurrentState.Caught) {
+            StealArtPiece();
         }
     }
 
@@ -61,16 +71,46 @@ public class PlayerController : MonoBehaviour
             currentState = CurrentState.Hacking;
             playerMovement.SetCurrentDirection(Vector2.zero);
             hackingTool.SetActive(true);
+            if (canHack) {
+                Debug.Log("Hacking!");
+            }
         } else {
             currentState = CurrentState.Idle;
             hackingTool.SetActive(false);
         }
+        
     }
 
     public void WasCaught() {
         currentState = CurrentState.Caught;
         playerMovement.SetCurrentDirection(Vector2.zero);
         hackingTool.SetActive(false);
+    }
+
+    private void StealArtPiece() {
+        artPiece.SetActive(false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("ArtPiece")) {
+            canTakeItem = true;
+        }
+        else if (other.gameObject.CompareTag("Laser")) {
+            bustedText.SetActive(true);
+            WasCaught();
+            sceneController.ReloadScene();
+        }
+        else if (other.gameObject.CompareTag("HackArea")) {
+            canHack = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        if (other.gameObject.CompareTag("ArtPiece")) {
+            canTakeItem = false;
+        } else if (other.gameObject.CompareTag("HackArea")) {
+            canHack = false;
+        }
     }
 }
 public enum CurrentState { Idle, Walking, Hacking, Caught }
