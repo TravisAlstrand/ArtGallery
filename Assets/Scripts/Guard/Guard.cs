@@ -13,6 +13,7 @@ public class Guard : MonoBehaviour
     [SerializeField] private float patrolSpeed = 5f;
     [SerializeField] private float chaseSpeed = 10f;
     [SerializeField] private GameObject exclamationMark;
+    [SerializeField] private GameObject bustedText;
 
     private int totalPatrolPoints;
     private int currentPatrolTarget;
@@ -24,13 +25,14 @@ public class Guard : MonoBehaviour
     private Rigidbody2D rigidBody;
     private Animator animator;
     private PlayerController player;
-
+    private SceneController sceneController;
 
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         player = FindFirstObjectByType<PlayerController>();
+        sceneController = FindFirstObjectByType<SceneController>();
     }
 
     private void Start()
@@ -141,9 +143,14 @@ public class Guard : MonoBehaviour
         {
             rigidBody.linearVelocity = Vector2.zero;
             currentGuardState = CurrentGuardState.idle;
-            // Trigger scene fade out and reload
-            // StartCoroutine(FadeOutAndReload());
+            bustedText.SetActive(true);
+            StartCoroutine(WaitToReloadScene());
         }
+    }
+
+    private IEnumerator WaitToReloadScene() {
+        yield return new WaitForSeconds(2f);
+        sceneController.ReloadScene();
     }
 }
 
