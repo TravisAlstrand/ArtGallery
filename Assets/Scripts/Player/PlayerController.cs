@@ -132,6 +132,7 @@ public class PlayerController : MonoBehaviour
         stealTipText.SetActive(false);
         escapeTipText.SetActive(true);
         stealArea.enabled = false;
+        hasItem = true;
         StartCoroutine(WaitToRemoveEscapeText());
     }
 
