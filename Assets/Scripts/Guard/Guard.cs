@@ -21,6 +21,8 @@ public class Guard : MonoBehaviour
     private Vector2 movementDirection;
     private float lastYDir;
     private float lastXDir;
+    private float reloadFallbackTimer = 2f;
+    private bool startFallbackTimer = false;
 
     private Rigidbody2D rigidBody;
     private Animator animator;
@@ -49,6 +51,12 @@ public class Guard : MonoBehaviour
             ChaseBehavior();
         }
         UpdateAnimatorParameters();
+        if (startFallbackTimer) {
+            reloadFallbackTimer -= Time.deltaTime;
+            if (reloadFallbackTimer < 0f) {
+                reloadFallbackTimer = 0f;
+            }
+        }
     }
 
     private IEnumerator PatrolRoutine()
@@ -131,20 +139,25 @@ public class Guard : MonoBehaviour
     }
 
     private void ChaseBehavior() {
+        startFallbackTimer = true;
         Vector2 directionToPlayer = (player.transform.position - transform.position).normalized;
         float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-        
-        if (distanceToPlayer > 2.25f)
-        {
-            rigidBody.linearVelocity = directionToPlayer * chaseSpeed;
-            movementDirection = directionToPlayer;
-        }
-        else
-        {
+
+        if (distanceToPlayer <= 2.25f || reloadFallbackTimer <= 0f) {
             rigidBody.linearVelocity = Vector2.zero;
             currentGuardState = CurrentGuardState.idle;
             bustedText.SetActive(true);
             sceneController.ReloadScene();
+        }
+        else {
+            rigidBody.linearVelocity = directionToPlayer * chaseSpeed;
+            movementDirection = directionToPlayer;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Player")) {
+            CaughtPlayer();
         }
     }
 }

@@ -5,6 +5,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject hackingTool;
     [SerializeField] private GameObject artPiece;
     [SerializeField] private GameObject bustedText;
+    [SerializeField] private GameObject hackTipText;
+    [SerializeField] private GameObject outOfRangeText;
+    [SerializeField] private GameObject hackingUI;
     public CurrentState currentState;
     private float lastX = 0f;
     private float lastY = -1f;
@@ -72,11 +75,24 @@ public class PlayerController : MonoBehaviour
             playerMovement.SetCurrentDirection(Vector2.zero);
             hackingTool.SetActive(true);
             if (canHack) {
-                Debug.Log("Hacking!");
+                hackTipText.SetActive(false);
+                hackingUI.SetActive(true);
+            }
+            else {
+                outOfRangeText.SetActive(true);
             }
         } else {
             currentState = CurrentState.Idle;
             hackingTool.SetActive(false);
+            if (canHack) {
+                hackTipText.SetActive(true);
+            }
+            if (outOfRangeText.activeInHierarchy) {
+                outOfRangeText.SetActive(false);
+            }
+            if (hackingUI.activeInHierarchy) {
+                hackingUI.SetActive(false);
+            }
         }
         
     }
@@ -102,6 +118,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("HackArea")) {
             canHack = true;
+            hackTipText.SetActive(true);
         }
     }
 
@@ -110,6 +127,7 @@ public class PlayerController : MonoBehaviour
             canTakeItem = false;
         } else if (other.gameObject.CompareTag("HackArea")) {
             canHack = false;
+            hackTipText.SetActive(false);
         }
     }
 }
