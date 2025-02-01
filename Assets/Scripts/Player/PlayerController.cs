@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("EndArea")) {
             if (hasItem) {
-                sceneController.LoadMainMenu();
+                sceneController.LoadNextScene();
             }
         }
     }
