@@ -5,11 +5,20 @@ using System.Collections;
 public class SceneController : MonoBehaviour
 {
     public void ReloadScene() {
-        StartCoroutine(WaitToReloadScene());
+        int index = SceneManager.GetActiveScene().buildIndex;
+        StartCoroutine(WaitToLoadScene(index, 2f));
     }
 
-    private IEnumerator WaitToReloadScene() {
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    public void LoadMainMenu() {
+        StartCoroutine(WaitToLoadScene(0, 1f));
+    }
+
+    public void LoadScene(int index) {
+        StartCoroutine(WaitToLoadScene(index, 1f));
+    }
+
+    private IEnumerator WaitToLoadScene(int sceneIndex, float timeToWait) {
+        yield return new WaitForSeconds(timeToWait);
+        SceneManager.LoadScene(sceneIndex);
     }
 }

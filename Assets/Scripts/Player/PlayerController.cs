@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
                 hackTipText.SetActive(false);
                 hackingUI.SetActive(true);
                 hackTimer += Time.deltaTime;
-                hackingSlider.value = hackTimer / 10;
+                hackingSlider.value = hackTimer / hackTimeTotal;
                 if (hackTimer >= hackTimeTotal) {
                     hackTimer = hackTimeTotal;
                     hackArea.SetActive(false);
@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("EndArea")) {
             if (hasItem) {
-                Debug.Log("WON!");
+                sceneController.LoadMainMenu();
             }
         }
     }
