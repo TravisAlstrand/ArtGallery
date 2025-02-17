@@ -4,6 +4,8 @@ using System.Collections;
 
 public class SceneController : MonoBehaviour
 {
+    [SerializeField] private int sceneToLoad;
+
     public void ReloadScene() {
         int index = SceneManager.GetActiveScene().buildIndex;
         StartCoroutine(WaitToLoadScene(index, 2f));
@@ -13,16 +15,12 @@ public class SceneController : MonoBehaviour
         StartCoroutine(WaitToLoadScene(0, 1f));
     }
 
-    public void LoadScene(int index) {
-        StartCoroutine(WaitToLoadScene(index, 1f));
+    public void LoadScene() {
+        StartCoroutine(WaitToLoadScene(sceneToLoad, 1f));
     }
  
     public void LoadNextScene() {
-        int index = SceneManager.GetActiveScene().buildIndex + 1;
-        if (index >= SceneManager.loadedSceneCount) {
-            index = 0;
-        }
-        StartCoroutine(WaitToLoadScene(index, 1f));
+        StartCoroutine(WaitToLoadScene(sceneToLoad, 1f));
     }
 
     private IEnumerator WaitToLoadScene(int sceneIndex, float timeToWait) {

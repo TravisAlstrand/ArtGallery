@@ -205,11 +205,11 @@ MonoBehaviour:
       - m_Target: {fileID: 228431404}
         m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
         m_MethodName: LoadScene
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -296,6 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 392fd0926c82747cc862f4e19d3cac68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneToLoad: 1
 --- !u!1 &871327246
 GameObject:
   m_ObjectHideFlags: 0
