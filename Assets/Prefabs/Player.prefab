@@ -533,7 +533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hackingTool: {fileID: 1764483379503506216}
   hackArea: {fileID: 0}
-  hackTimeTotal: 10
+  hackTimeTotal: 5
   hackingUI: {fileID: 0}
   hackingSlider: {fileID: 0}
   hackTipText: {fileID: 0}
@@ -542,8 +542,12 @@ MonoBehaviour:
   stealTipText: {fileID: 0}
   lasers:
   - {fileID: 0}
-  - {fileID: 0}
   stealArea: {fileID: 0}
+  audioSource: {fileID: 0}
+  alarmSFX: {fileID: 8300000, guid: 7b88411f7fed5434aa4acd92c9c26745, type: 3}
+  itemSFX: {fileID: 8300000, guid: fe13ff9ce88504427867d9af409750d8, type: 3}
+  hackSFX: {fileID: 8300000, guid: fbd63d81aae2f4bf2b56cfe51fcae385, type: 3}
+  successSFX: {fileID: 8300000, guid: 56598feaedbc24e4d978aa43ebc4c82b, type: 3}
   bustedText: {fileID: 0}
   escapeTipText: {fileID: 0}
   currentState: 0

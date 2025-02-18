@@ -17,6 +17,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject stealTipText;
     [SerializeField] private GameObject[] lasers;
     [SerializeField] private CircleCollider2D stealArea;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip alarmSFX;
+    [SerializeField] private AudioClip itemSFX;
+    [SerializeField] private AudioClip hackSFX;
+    [SerializeField] private AudioClip successSFX;
     [Header("General")]
     [SerializeField] private GameObject bustedText;
     [SerializeField] private GameObject escapeTipText;
@@ -94,6 +100,8 @@ public class PlayerController : MonoBehaviour
                 hackTimer += Time.deltaTime;
                 hackingSlider.value = hackTimer / hackTimeTotal;
                 if (hackTimer >= hackTimeTotal) {
+                    audioSource.clip = hackSFX;
+                    audioSource.Play();
                     hackTimer = hackTimeTotal;
                     hackArea.SetActive(false);
                     foreach (GameObject laser in lasers) {
@@ -125,6 +133,8 @@ public class PlayerController : MonoBehaviour
         currentState = CurrentState.Caught;
         playerMovement.SetCurrentDirection(Vector2.zero);
         hackingTool.SetActive(false);
+        audioSource.clip = alarmSFX;
+        audioSource.Play();
     }
 
     private void StealArtPiece() {
@@ -133,6 +143,8 @@ public class PlayerController : MonoBehaviour
         escapeTipText.SetActive(true);
         stealArea.enabled = false;
         hasItem = true;
+        audioSource.clip = itemSFX;
+        audioSource.Play();
         StartCoroutine(WaitToRemoveEscapeText());
     }
 
@@ -157,6 +169,8 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("EndArea")) {
             if (hasItem) {
+                audioSource.clip = successSFX;
+                audioSource.Play();
                 sceneController.LoadNextScene();
             }
         }
