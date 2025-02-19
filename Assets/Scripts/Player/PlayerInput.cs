@@ -9,6 +9,7 @@ public class PlayerInput : MonoBehaviour
     private InputAction move;
     private InputAction interact;
     private InputAction hack;
+    private InputAction submit;
 
     private void Awake()
     {
@@ -16,6 +17,7 @@ public class PlayerInput : MonoBehaviour
         move = inputActions.Player.Move;
         interact = inputActions.Player.Interact;
         hack = inputActions.Player.Hack;
+        submit = inputActions.UI.Submit;
     }
 
     private void OnEnable()
@@ -39,7 +41,8 @@ public class PlayerInput : MonoBehaviour
         {
             Move = move.ReadValue<Vector2>(),
             Interact = interact.WasPressedThisFrame(),
-            Hack = hack.IsPressed()
+            Hack = hack.IsPressed(),
+            SubmitRelease = submit.WasReleasedThisFrame(),
         };
     }
 
@@ -61,4 +64,5 @@ public struct FrameInput
     public Vector2 Move;
     public bool Interact;
     public bool Hack;
+    public bool SubmitRelease;
 }
